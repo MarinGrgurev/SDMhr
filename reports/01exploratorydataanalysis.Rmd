@@ -1,0 +1,17 @@
+---
+title: "Exploratory data analysis for sdmhr project"
+author: "Marin Grgurev"
+date: "Thursday, September 11, 2014"
+output: html_document
+---
+
+
+```{r}
+library(ProjectTemplate)
+load.project()
+```
+
+```{r}
+head(data)
+```
+
