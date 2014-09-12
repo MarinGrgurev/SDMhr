@@ -13,6 +13,6 @@ load.project()
 
 ### Getting data summary
 ```{r Getting Data Summary, comment=""}
-table(data[,gid])
+table(data[,ecol.var])
 ```
 
