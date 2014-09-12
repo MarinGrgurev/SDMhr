@@ -1,0 +1,50 @@
+---
+title: "Preparing (munging) data for analysis"
+author: "Marin Grgurev"
+date: "Thursday, September 11, 2014"
+output: html_document
+---
+
+```{r Read raw data, include=FALSE}
+if(basename(getwd()) == "reports") setwd("..")
+library(data.table)
+load("data/data.Rda")
+data <- setDT(data)
+```
+Adjusting the variable class and names
+This script prepare the raw data obtained  from the PG database to use in later analysis. 
+
+The steps to prepare the tidy data set includes:
+
+* creating of data.table (raw data is approximately ~ 1 million rows with 6 variables big dataframe)
+
+* adjusting variable names to be inline with the Google's R Style Guide guidance regarding easier reading, sharing and verifying of R code
+
+* concatenating name of the ecological variables with name of the statistic and removing of unused statistic column
+
+* convert pres.abs and radius.hr variables to factors
+
+* caching tidy dataset for later use
+
+### Changing the name for some of the variables
+```{r Setnames}
+setnames(data, colnames(data)[c(2,3,4,5,6)], c("pres.abs", "radius.hr", "ecol.var", "statistic", "value"))
+```
+
+### Concatenating all variable names with statistic except lvoc variables and removing statistic variable
+```{r Concatenating variables with statistic}
+data[statistic != "percent", ecol.var := paste(data[statistic != "percent", ecol.var], "_", data[statistic != "percent", statistic], sep = "")]
+data[,statistic := NULL]
+```
+
+### Change type for pres.abs and radius.hr variables to factors
+```{r}
+data[,pres.abs := as.factor(pres.abs)]
+data[,radius.hr := as.factor(radius.hr)]
+```
+
+### Cache data
+```{r}
+#cache("data")
+```
+
